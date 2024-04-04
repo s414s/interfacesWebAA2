@@ -1,0 +1,58 @@
+:root {
+    /* --hours: 3;
+    --minutes: 10;
+    --seconds: 0; */
+
+    /* convertir a número por vuelta */
+    /* --secondsPerTurn: 1s;
+    --minutesPerTurn: calc(var(--secondsPerTurn) * 60);
+    --hoursPerTurn: calc(var(--minutesPerTurn) * 60 * 12); */
+
+    /* --currentSeconds: calc(13.5 * 60 * 60); */
+
+    --currentSeconds: 0;
+}
+
+.hour,
+.minute,
+.second {
+    transform-origin: 100px 100px;
+}
+
+.hour {
+    /* transform: rotate(calc(var(--hours) * 30deg)); */
+    /* 60 * 60 * 12 segundos en una vuelta */
+
+    animation: rotateSecond 43200s linear infinite;
+    /* valores en negativo empiezan la animación desde un punto en concreto */
+    /* animation-delay: -3600s; */
+    animation-delay: calc(var(--currentSeconds) * -1s);
+}
+
+.minute {
+    /* transform: rotate(calc(var(--minutes) * 6deg)); */
+    /* 60 * 60 segundos en un vuelta */
+    animation: rotateSecond 3600s linear infinite;
+    /* animation-delay: calc(300*-1s); */
+    animation-delay: calc(var(--currentSeconds) * -1s);
+}
+
+.second {
+    /* 60 segundos en un vuelta */
+    /* transform: rotate(calc(var(--seconds) * 6deg)); */
+    animation: rotateSecond 60s linear infinite;
+    /* animation-delay: -20s; */
+    animation-delay: calc(var(--currentSeconds) * -1s);
+}
+
+@keyframes rotateSecond {
+    from {
+        /* transform: rotate(calc(var(--seconds) * 1deg)); */
+        transform: rotate(calc(var(--currentSeconds) * 1deg));
+    }
+
+    to {
+        /* transform: rotate(calc(var(--seconds) * 1deg + 360deg)); */
+        transform: rotate(calc(var(--currentSeconds) * 1deg + 360deg));
+    }
+}

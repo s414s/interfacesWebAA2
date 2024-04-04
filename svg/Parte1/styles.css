@@ -1,0 +1,23 @@
+:root {
+    --hours: 11;
+    --minutes: 4;
+    --seconds: 38;
+}
+
+.hour,
+.minute,
+.second {
+    transform-origin: 100px 100px;
+}
+
+.hour {
+    transform: rotate(calc(var(--hours) * 30deg));
+}
+
+.minute {
+    transform: rotate(calc(var(--minutes) * 6deg));
+}
+
+.second {
+    transform: rotate(calc(var(--seconds) * 6deg));
+}

@@ -1,21 +1,3 @@
-class Ficha {
-    constructor(x, y, radio) {
-        this.x = x + radio; // Asegura que la ficha no se salga del canvas.
-        this.y = y + radio; // Ajusta la posición inicial para que el círculo quede completamente dentro del canvas.
-        this.radio = radio;
-    }
-
-    dibuja(context) {
-        context.beginPath(); // Comienza un nuevo camino.
-        context.arc(this.x, this.y, this.radio, 0, Math.PI * 2); // Dibuja un círculo completo.
-        context.fillStyle = 'blue'; // Color de la ficha.
-        context.fill(); // Rellena el círculo.
-    }
-
-    actualiza() {
-        // Aquí puedes agregar lógica para actualizar la posición de la ficha si es necesario.
-    }
-}
 
 function anima() {
     requestAnimationFrame(anima); // Crea un bucle de animación.
@@ -30,45 +12,129 @@ function anima() {
     ficha.dibuja(context); // Dibuja la ficha.
 }
 
-// Esto es mio
-class Tablero {
-    constructor(width, height, canvasHTMLElement) {
-        this.width = width;
-        this.height = height;
-        this.canvas = canvasHTMLElement;
+class Keyboard {
+    constructor() {
+        this.controller = {
+            ArrowUp: false,
+            ArrowRight: false,
+            ArrowDown: false,
+            ArrowLeft: false
+        }
+
+        document.addEventListener("keydown", (e) => {
+            // console.log("key pressed", e.code)
+            if (Object.keys(this.controller).includes(e.code)) {
+                this.controller[e.code] = true;
+                this.changeBearing();
+            }
+        })
+
+        document.addEventListener("keyup", (e) => {
+            // console.log("key pressed", e.code)
+            if (Object.keys(this.controller).includes(e.code)) {
+                this.controller[e.code] = false;
+                this.changeBearing();
+            }
+        })
     }
 
-    init() {
-        this.context = this.canvas.getContext('2d');
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
-        this.ficha = new Ficha(0, 0, 25);
+    changeBearing() {
+        const tc = this.controller;
+        let bearing = null;
+
+        if (tc.ArrowUp) {
+            bearing = "up";
+            return "up";
+        } else if (tc.ArrowRight) {
+            bearing = "right";
+            return "right";
+        } else if (tc.ArrowDown) {
+            bearing = "down";
+            return "down";
+        } else if (tc.ArrowLeft) {
+            bearing = "left";
+            return "left";
+        } else {
+            return null
+        }
+    }
+}
+
+class Ficha {
+
+    constructor(x, y, radius) {
+        this.x = x + radius;
+        this.y = y + radius;
+        this.radius = radius;
+        this.speed = 10;
     }
 
-    dibuja(context) {
+    maxRange(canvasWidth, canvasHeight) {
+        this.minX = this.radius;
+        this.maxX = canvasWidth - this.radius;
+        this.minY = this.radius;
+        this.maxY = canvasHeight - this.radius;
+    }
+
+    clamp() {
+        this.x = Math.min(Math.max(this.x, this.minX), this.maxX);
+        this.y = Math.min(Math.max(this.y, this.minY), this.maxY);
+    }
+
+    dibuja() {
         context.beginPath(); // Comienza un nuevo camino.
-        context.arc(this.x, this.y, this.radio, 0, Math.PI * 2); // Dibuja un círculo completo.
+        context.arc(ficha.x, ficha.y, ficha.radius, 0, Math.PI * 2); // Dibuja un círculo completo.
         context.fillStyle = 'blue'; // Color de la ficha.
         context.fill(); // Rellena el círculo.
     }
 
-    actualiza() {
-        // Aquí puedes agregar lógica para actualizar la posición de la ficha si es necesario.
+    move(movementType) {
+        if (movementType === 'down') {
+            this.y += this.speed;
+            this.clamp();
+        } else if (movementType === 'up') {
+            this.y -= this.speed;
+            this.clamp();
+        } else if (movementType === 'right') {
+            this.x += this.speed;
+            this.clamp();
+        } else if (movementType === 'left') {
+            this.x -= this.speed;
+            this.clamp();
+        }
     }
+
 }
 
+// ==============
+const width = 600;
+const height = 600;
 
-// Configuración inicial del canvas.
-const canvas = document.getElementById('miCanvas');
-const tablero = new Tablero(400, 400, canvas);
-tablero.init();
+var canvas = document.getElementById('tablero');
+var context = canvas.getContext('2d');
+var keyboard = new Keyboard();
 
-const context = canvas.getContext('2d');
+canvas.width = width;
+canvas.height = height;
 
-// canvas.width = 400;
-// canvas.height = 400;
+function draw() {
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-// Inicializa la ficha en la esquina superior izquierda del tablero.
-let ficha = new Ficha(0, 0, 25); // La posición (0, 0) ajustada con el radio de la ficha.
+    var bearing = keyboard.changeBearing();
+    console.log("new bearing", bearing)
 
-anima(); // Comienza la animación.
+    ficha.move(bearing);
+    ficha.dibuja();
+
+    // dibuja rectangulo
+    context.strokeStyle = 'red';
+    context.lineWidth = 10;
+    context.strokeRect(0, 0, width, height); // Draws an empty rectangle with a 10-pixel margin around it inside the canvas.
+
+    self.requestAnimationFrame(draw);
+}
+
+let ficha = new Ficha(0, 0, 25);
+ficha.maxRange(width, height);
+
+draw();

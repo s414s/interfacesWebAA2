@@ -1,17 +1,3 @@
-
-function anima() {
-    requestAnimationFrame(anima); // Crea un bucle de animación.
-    context.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas.
-
-    // Dibuja el tablero (cuadrado transparente).
-    context.beginPath();
-    context.rect(0, 0, canvas.width, canvas.height);
-    context.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Semi-transparente para visualizar el "tablero".
-    context.fill();
-
-    ficha.dibuja(context); // Dibuja la ficha.
-}
-
 class Keyboard {
     constructor() {
         this.controller = {
@@ -82,10 +68,10 @@ class Ficha {
     }
 
     dibuja() {
-        context.beginPath(); // Comienza un nuevo camino.
-        context.arc(ficha.x, ficha.y, ficha.radius, 0, Math.PI * 2); // Dibuja un círculo completo.
-        context.fillStyle = 'blue'; // Color de la ficha.
-        context.fill(); // Rellena el círculo.
+        context.beginPath();
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        context.fillStyle = 'blue';
+        context.fill();
     }
 
     move(movementType) {

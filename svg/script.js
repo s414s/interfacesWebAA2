@@ -1,10 +1,11 @@
 const root = document.querySelector(':root');
 
-window.onload = function setInitialHandPositions() {
+function setInitialHandPositions() {
     // const svg = document.getElementById("reloj")
 
     // const root = document.documentElement;
     // const root = document.querySelector(':root');
+
     console.log("root", root)
 
     const currentTime = new Date();
@@ -33,3 +34,5 @@ window.onload = function setInitialHandPositions() {
 
 // Set initial positions
 // setInitialHandPositions();
+
+window.onload = setInitialHandPositions;

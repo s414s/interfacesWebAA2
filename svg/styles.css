@@ -1,16 +1,14 @@
-:root {
-    /* --hours: 3;
-    --minutes: 10;
-    --seconds: 0; */
+svg {
+    width: 400px;
+    fill: white;
+    stroke: black;
+    stroke-linecap: round;
 
-    /* convertir a número por vuelta */
-    /* --secondsPerTurn: 1s;
-    --minutesPerTurn: calc(var(--secondsPerTurn) * 60);
-    --hoursPerTurn: calc(var(--minutesPerTurn) * 60 * 12); */
+    /* transform: rotate(-90deg); */
 
-    /* --currentSeconds: calc(13.5 * 60 * 60); */
-
-    --currentSeconds: 0;
+    --start-seconds: 57;
+    --start-minutes: 45;
+    --start-hours: 11;
 }
 
 .hour,
@@ -19,40 +17,53 @@
     transform-origin: 100px 100px;
 }
 
-.hour {
-    /* transform: rotate(calc(var(--hours) * 30deg)); */
-    /* 60 * 60 * 12 segundos en una vuelta */
-
-    animation: rotateSecond 43200s linear infinite;
-    /* valores en negativo empiezan la animación desde un punto en concreto */
-    /* animation-delay: -3600s; */
-    animation-delay: calc(var(--currentSeconds) * -1s);
+.second {
+    stroke-width: 0.3;
+    stroke: #d00505;
+    transform: rotate(calc(var(--start-seconds) * 6deg));
+    animation: rotateSecondsHand 60s steps(60) infinite;
 }
 
 .minute {
-    /* transform: rotate(calc(var(--minutes) * 6deg)); */
-    /* 60 * 60 segundos en un vuelta */
-    animation: rotateSecond 3600s linear infinite;
-    /* animation-delay: calc(300*-1s); */
-    animation-delay: calc(var(--currentSeconds) * -1s);
+    stroke-width: 0.6;
+    transform: rotate(calc(var(--start-minutes) * 6deg));
+    animation: rotateMinuteHand 3600s steps(60) infinite;
+    animation-delay: calc(var(--start-seconds) * -1 * 1s);
 }
 
-.second {
-    /* 60 segundos en un vuelta */
-    /* transform: rotate(calc(var(--seconds) * 6deg)); */
-    animation: rotateSecond 60s linear infinite;
-    /* animation-delay: -20s; */
-    animation-delay: calc(var(--currentSeconds) * -1s);
+.hour {
+    stroke-width: 1;
+    transform: srotate(calc(var(--start-hours) * 30deg));
+    animation: rotateHourHand calc(12 * 60 * 60s) linear infinite;
+    animation-delay: calc(calc(var(--start-minutes) * -60 * 1s) + calc(var(--start-seconds) * -1 * 1s));
 }
 
-@keyframes rotateSecond {
+@keyframes rotateSecondsHand {
     from {
-        /* transform: rotate(calc(var(--seconds) * 1deg)); */
-        transform: rotate(calc(var(--currentSeconds) * 1deg));
+        transform: rotate(calc(var(--start-seconds) * 6deg));
     }
 
     to {
-        /* transform: rotate(calc(var(--seconds) * 1deg + 360deg)); */
-        transform: rotate(calc(var(--currentSeconds) * 1deg + 360deg));
+        transform: rotate(calc(var(--start-seconds) * 6deg + 360deg));
+    }
+}
+
+@keyframes rotateMinuteHand {
+    from {
+        transform: rotate(calc(var(--start-minutes) * 6deg));
+    }
+
+    to {
+        transform: rotate(calc(var(--start-minutes) * 6deg + 360deg));
+    }
+}
+
+@keyframes rotateHourHand {
+    from {
+        transform: rotate(calc(var(--start-hours) * 30deg));
+    }
+
+    to {
+        transform: rotate(calc(var(--start-hours) * 30deg + 360deg));
     }
 }

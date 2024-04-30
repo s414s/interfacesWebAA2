@@ -8,7 +8,6 @@ class Keyboard {
         }
 
         document.addEventListener("keydown", (e) => {
-            // console.log("key pressed", e.code)
             if (Object.keys(this.controller).includes(e.code)) {
                 this.controller[e.code] = true;
                 this.changeBearing();
@@ -16,7 +15,6 @@ class Keyboard {
         })
 
         document.addEventListener("keyup", (e) => {
-            // console.log("key pressed", e.code)
             if (Object.keys(this.controller).includes(e.code)) {
                 this.controller[e.code] = false;
                 this.changeBearing();
@@ -92,7 +90,6 @@ class Ficha {
 
 }
 
-// ==============
 const width = 600;
 const height = 600;
 
@@ -115,7 +112,7 @@ function draw() {
     // dibuja rectangulo
     context.strokeStyle = 'red';
     context.lineWidth = 10;
-    context.strokeRect(0, 0, width, height); // Draws an empty rectangle with a 10-pixel margin around it inside the canvas.
+    context.strokeRect(0, 0, width, height);
 
     self.requestAnimationFrame(draw);
 }
